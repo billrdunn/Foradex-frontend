@@ -1,29 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios'
 import Item from "./components/Item";
 import SearchBar from "./components/SearchBar";
 
-const initItems = [
-  {
-    latin: "Amanita muscara",
-    common: ["Fly agaric"],
-    id: 0,
-  },
-  {
-    latin: "Scleroderma citrinum",
-    common: ["Common earthball"],
-    id: 1,
-  },
-  {
-    latin: "Amanita virosa",
-    common: ["Destroying angel"],
-    id: 2,
-  },
-];
-
 const App = () => {
-  const [items, setItems] = useState(initItems);
+  const [items, setItems] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [searchStr, setSearchStr] = useState(" ");
+
+  // The effect is executed immediately after rendering the component
+  useEffect(() => {
+    // axios.get(...) returns a promise
+    axios.get("https://localhost:3001/items")
+      .then(res => {
+        // Executed when the promise is fulfilled
+        
+        setItems(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      }
+    );
+  }, [])
+  // By default, effects are run after every completed render
+  // but the [] array is empty, so the effect is only run once
 
   const itemsToShow = showAll
     ? items
