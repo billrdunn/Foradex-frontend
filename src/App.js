@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from 'axios'
+import itemService from './services/items';
 import Item from "./components/Item";
 import SearchBar from "./components/SearchBar";
 
@@ -10,14 +10,14 @@ const App = () => {
 
   // The effect is executed immediately after rendering the component
   useEffect(() => {
-    // axios.get(...) returns a promise
-    axios.get("https://localhost:3001/items")
-      .then(res => {
+    itemService.getAll()
+      .then(initialItems => {
         // Executed when the promise is fulfilled
-        
-        setItems(res.data);
+        setItems(initialItems);
       })
       .catch(err => {
+        // Catch any erros in the promise chain
+        // causing a promise to be rejected
         console.log(err);
       }
     );
