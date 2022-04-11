@@ -1,29 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Item from "./components/Item";
 import SearchBar from "./components/SearchBar";
-
-const initItems = [
-  {
-    latin: "Amanita muscara",
-    common: ["Fly agaric"],
-    id: 0,
-  },
-  {
-    latin: "Scleroderma citrinum",
-    common: ["Common earthball"],
-    id: 1,
-  },
-  {
-    latin: "Amanita virosa",
-    common: ["Destroying angel"],
-    id: 2,
-  },
-];
+import axios from "axios";
 
 const App = () => {
-  const [items, setItems] = useState(initItems);
+  const [items, setItems] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [searchStr, setSearchStr] = useState(" ");
+
+  useEffect(() => {
+    axios
+    .get("http://localhost:3001/api/items")
+    .then(res => {
+      setItems(res.data)
+    })
+  }, [])
 
   const itemsToShow = showAll
     ? items
