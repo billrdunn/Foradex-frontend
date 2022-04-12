@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Item from "./components/Item";
 import SearchBar from "./components/SearchBar";
-import axios from "axios";
+import itemService from "./services/items";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -9,11 +9,11 @@ const App = () => {
   const [searchStr, setSearchStr] = useState(" ");
 
   useEffect(() => {
-    axios
-    .get("http://localhost:3001/api/items")
-    .then(res => {
-      setItems(res.data)
-    })
+    itemService
+      .getAll()
+      .then(res => {
+        setItems(res)
+      })
   }, [])
 
   const itemsToShow = showAll
