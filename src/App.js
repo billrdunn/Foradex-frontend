@@ -44,7 +44,6 @@ const App = () => {
       );
 
   const handleSearchChange = (event) => {
-    console.log("event.target.value :>> ", event.target.value);
     setShowAll(false);
     setSearchStr(event.target.value.toLowerCase());
   };
@@ -73,14 +72,25 @@ const App = () => {
     </form>
   );
 
+  const itemList = () => {
+    return (
+      <div>
+        <h1>Items</h1>
+        <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
+        <ul>
+          {itemsToShow.map((item) => {
+            return <Item key={item.id} item={item} found={user.items.includes(item.id)} />;
+          })}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <div>
       <h1>Foradex</h1>
       {user === null ? loginForm() : <h2>{user.name} logged in</h2>}
-      {itemsToShow.map((item) => (
-        <Item key={item.id} item={item} />
-      ))}
-      <SearchBar onChange={handleSearchChange} />
+      {user !== null && itemList()}
     </div>
   );
 };
