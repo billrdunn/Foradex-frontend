@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Item from "./components/Item";
+import LogoutButton from "./components/LogoutButton";
 import SearchBar from "./components/SearchBar";
 import itemService from "./services/items";
 import loginService from "./services/login";
@@ -128,10 +129,17 @@ const App = () => {
     );
   };
 
+  const handleLogout = () => {
+    console.log('handle logout');
+    window.localStorage.removeItem("loggedInUser");
+    setUser(null);
+  };
+
   return (
     <div>
       <h1>Foradex</h1>
       {user === null ? loginForm() : <h2>{user.name} logged in</h2>}
+      {user !== null && <LogoutButton onClick={() => handleLogout()} />}
       {user !== null && itemList()}
     </div>
   );
