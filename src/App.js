@@ -3,6 +3,7 @@ import Item from "./components/Item";
 import SearchBar from "./components/SearchBar";
 import itemService from "./services/items";
 import loginService from "./services/login";
+import userService from "./services/users";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -22,12 +23,12 @@ const App = () => {
     event.preventDefault();
     console.log("logging in with", username, password);
     try {
-      const user = await loginService.login({
+      const loggedInUser = await loginService.login({
         username,
         password,
       });
-      itemService.setToken(user.token);
-      setUser(user);
+      userService.setToken(loggedInUser.token);
+      setUser(loggedInUser);
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -72,6 +73,28 @@ const App = () => {
     </form>
   );
 
+  const handleToggleFound = async (item) => {
+    if (user.items.includes(item.id)) {
+      const newItems = user.items.filter((i) => i !== item.id);
+      const newUser = {
+        ...user,
+        items: newItems,
+      };
+      await userService.update(user.id, newUser);
+      setUser(newUser);
+    } else {
+      const newItems = [...user.items, item.id];
+
+      const newUser = {
+        ...user,
+        items: newItems,
+      };
+
+      await userService.update(user.id, newUser);
+      setUser(newUser);
+    }
+  };
+
   const itemList = () => {
     return (
       <div>
@@ -79,7 +102,14 @@ const App = () => {
         <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
         <ul>
           {itemsToShow.map((item) => {
-            return <Item key={item.id} item={item} found={user.items.includes(item.id)} />;
+            return (
+              <Item
+                key={item.id}
+                item={item}
+                found={user.items.includes(item.id)}
+                handleToggleFound={handleToggleFound}
+              />
+            );
           })}
         </ul>
       </div>

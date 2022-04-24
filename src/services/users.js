@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/api/items";
+const baseUrl = "/api/users";
 
 let token = null;
 const setToken = (newToken) => {
@@ -16,10 +16,11 @@ const create = async (newObject) => {
   return response.data;
 };
 
-const update = (id, newObject) => {
+const update = async (id, newObject) => {
   const config = { headers: { Authorization: token } };
-  const request = axios.put(`${baseUrl}/${id}`, newObject, config);
-  return request.then((response) => response.data);
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
+
+  return response.data;
 };
 
 export default { getAll, create, update, setToken };
