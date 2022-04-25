@@ -5,6 +5,7 @@ import SearchBar from "./components/SearchBar";
 import itemService from "./services/items";
 import loginService from "./services/login";
 import userService from "./services/users";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -13,6 +14,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     itemService.getAll().then((res) => {
@@ -62,29 +64,28 @@ const App = () => {
     setSearchStr(event.target.value.toLowerCase());
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
+  const loginForm = () => {
+    const hideWhenLoginVisible = { display: loginVisible ? "none" : "" };
+    const showWhenLoginVisible = { display: loginVisible ? "" : "none" };
+
+    return (
       <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        <div style={hideWhenLoginVisible}>
+          <button onClick={() => setLoginVisible(true)}>show login</button>
+        </div>
+        <div style={showWhenLoginVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
       </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
+    );
+  };
 
   const handleToggleFound = async (item) => {
     if (user.items.includes(item.id)) {
@@ -130,7 +131,7 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    console.log('handle logout');
+    console.log("handle logout");
     window.localStorage.removeItem("loggedInUser");
     setUser(null);
   };
