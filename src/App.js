@@ -63,9 +63,7 @@ const App = () => {
   const loginForm = () => {
     return (
       <Togglable buttonLabel="show login">
-        <LoginForm
-          handleLogin={handleLogin}
-        />
+        <LoginForm handleLogin={handleLogin} />
       </Togglable>
     );
   };
@@ -92,23 +90,26 @@ const App = () => {
     }
   };
 
+  const handleViewDetails = (item) => {
+    console.log("item :>> ", item);
+  };
+
   const itemList = () => {
     return (
       <div>
         <h1>Items</h1>
         <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
-        <ul>
-          {itemsToShow.map((item) => {
-            return (
-              <Item
-                key={item.id}
-                item={item}
-                found={user.items.includes(item.id)}
-                handleToggleFound={handleToggleFound}
-              />
-            );
-          })}
-        </ul>
+        {itemsToShow.map((item) => {
+          return (
+            <Item
+              key={item.id}
+              item={item}
+              found={user.items.includes(item.id)}
+              handleToggleFound={handleToggleFound}
+              handleViewDetails={handleViewDetails}
+            />
+          );
+        })}
       </div>
     );
   };
