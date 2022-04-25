@@ -6,6 +6,7 @@ import itemService from "./services/items";
 import loginService from "./services/login";
 import userService from "./services/users";
 import LoginForm from "./components/LoginForm";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -14,7 +15,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     itemService.getAll().then((res) => {
@@ -65,25 +65,17 @@ const App = () => {
   };
 
   const loginForm = () => {
-    const hideWhenLoginVisible = { display: loginVisible ? "none" : "" };
-    const showWhenLoginVisible = { display: loginVisible ? "" : "none" };
 
     return (
-      <div>
-        <div style={hideWhenLoginVisible}>
-          <button onClick={() => setLoginVisible(true)}>show login</button>
-        </div>
-        <div style={showWhenLoginVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
+      <Togglable buttonLabel="show login">
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </Togglable>
     );
   };
 
