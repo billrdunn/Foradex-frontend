@@ -12,8 +12,6 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [searchStr, setSearchStr] = useState(" ");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -31,9 +29,9 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    console.log("logging in with", username, password);
+  const handleLogin = async (userObject) => {
+    const username = userObject.username;
+    const password = userObject.password;
     try {
       const loggedInUser = await loginService.login({
         username,
@@ -44,8 +42,6 @@ const App = () => {
 
       userService.setToken(loggedInUser.token);
       setUser(loggedInUser);
-      setUsername("");
-      setPassword("");
     } catch (exception) {
       alert("Invalid credentials", exception);
     }
@@ -65,15 +61,10 @@ const App = () => {
   };
 
   const loginForm = () => {
-
     return (
       <Togglable buttonLabel="show login">
         <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
+          handleLogin={handleLogin}
         />
       </Togglable>
     );
@@ -123,7 +114,6 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    console.log("handle logout");
     window.localStorage.removeItem("loggedInUser");
     setUser(null);
   };
