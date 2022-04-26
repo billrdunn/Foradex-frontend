@@ -20,23 +20,32 @@ function LoginForm({ handleLogin }) {
   };
 
   return (
-    <div>
+    <div className="loginFormDiv">
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>
         <div>
-          username
-          <input value={username} onChange={({ target }) => setUsername(target.value)} />
+          <input
+            className="loginInputUsername"
+            id="loginInputUsername"
+            placeholder="username"
+            value={username}
+            onChange={({ target }) => setUsername(target.value)}
+          />
         </div>
         <div>
-          password
           <input
+            className="loginInputPassword"
+            id="loginInputPassword"
+            placeholder="password"
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button className="loginButton" id="loginButton" type="submit">
+          login
+        </button>
       </form>
     </div>
   );
