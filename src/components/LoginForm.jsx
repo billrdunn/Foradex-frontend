@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const LoginForm = ({ handleLogin }) => {
+function LoginForm({ handleLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -40,6 +40,6 @@ const LoginForm = ({ handleLogin }) => {
       </form>
     </div>
   );
-};
+}
 
 export default LoginForm;

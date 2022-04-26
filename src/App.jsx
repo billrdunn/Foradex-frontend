@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Item from "./components/Item";
 import LogoutButton from "./components/LogoutButton";
 import SearchBar from "./components/SearchBar";
@@ -8,7 +8,7 @@ import userService from "./services/users";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
 
-const App = () => {
+function App() {
   const [items, setItems] = useState([]);
   const [showAll, setShowAll] = useState(true);
   const [searchStr, setSearchStr] = useState(" ");
@@ -23,15 +23,15 @@ const App = () => {
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
     if (loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON);
+      const loggedInUser = JSON.parse(loggedInUserJSON);
       setUser(user);
-      userService.setToken(user.token);
+      userService.setToken(loggedInUser.token);
     }
   }, []);
 
   const handleLogin = async (userObject) => {
-    const username = userObject.username;
-    const password = userObject.password;
+    const { username } = userObject;
+    const { password } = userObject;
     try {
       const loggedInUser = await loginService.login({
         username,
@@ -60,13 +60,11 @@ const App = () => {
     setSearchStr(event.target.value.toLowerCase());
   };
 
-  const loginForm = () => {
-    return (
-      <Togglable buttonLabel="show login">
-        <LoginForm handleLogin={handleLogin} />
-      </Togglable>
-    );
-  };
+  const loginForm = () => (
+    <Togglable buttonLabel="show login">
+      <LoginForm handleLogin={handleLogin} />
+    </Togglable>
+  );
 
   const handleToggleFound = async (item) => {
     if (user.items.includes(item.id)) {
@@ -94,25 +92,21 @@ const App = () => {
     console.log("item :>> ", item);
   };
 
-  const itemList = () => {
-    return (
-      <div>
-        <h1>Items</h1>
-        <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
-        {itemsToShow.map((item) => {
-          return (
-            <Item
-              key={item.id}
-              item={item}
-              found={user.items.includes(item.id)}
-              handleToggleFound={handleToggleFound}
-              handleViewDetails={handleViewDetails}
-            />
-          );
-        })}
-      </div>
-    );
-  };
+  const itemList = () => (
+    <div>
+      <h1>Items</h1>
+      <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
+      {itemsToShow.map((item) => (
+        <Item
+          key={item.id}
+          item={item}
+          found={user.items.includes(item.id)}
+          handleToggleFound={handleToggleFound}
+          handleViewDetails={handleViewDetails}
+        />
+      ))}
+    </div>
+  );
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedInUser");
@@ -127,6 +121,6 @@ const App = () => {
       {user !== null && itemList()}
     </div>
   );
-};
+}
 
 export default App;
