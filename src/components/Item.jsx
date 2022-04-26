@@ -37,7 +37,7 @@ function Item({ item, found, handleToggleFound }) {
 
   if (showDetails) {
     return (
-      <div className="item" style={itemStyle}>
+      <div className="item" style={itemStyle} id="itemDetailsDiv">
         <h2>{item.latin}</h2>
         <p>{item.common}</p>
         <p>Cap: {item.description.cap}</p>
@@ -57,7 +57,7 @@ function Item({ item, found, handleToggleFound }) {
     );
   }
   return (
-    <div style={itemStyle}>
+    <div style={itemStyle} id="itemBasicDiv">
       <h2>{item.latin}</h2>
       {item.common[0]}
       <p />
