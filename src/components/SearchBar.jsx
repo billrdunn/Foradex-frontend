@@ -10,7 +10,7 @@ function SearchBar({ onChange }) {
     <div>
       Search:
       <form>
-        <input onChange={onChange} />
+        <input id="searchBarInput" onChange={onChange} />
       </form>
     </div>
   );
