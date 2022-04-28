@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFound } from "../reducers/usersReducer";
 
-function Item({ item, found, handleToggleFound }) {
+function Item({ item, found }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.login)
   const [showDetails, setShowDetails] = useState(false);
 
   Item.propTypes = {
@@ -21,7 +25,6 @@ function Item({ item, found, handleToggleFound }) {
       image: PropTypes.string.isRequired,
     }).isRequired,
     found: PropTypes.bool.isRequired,
-    handleToggleFound: PropTypes.func.isRequired,
   };
 
   const itemStyle = {
@@ -33,6 +36,10 @@ function Item({ item, found, handleToggleFound }) {
 
   const handleShowDetails = () => {
     setShowDetails(!showDetails);
+  };
+
+  const handleToggleFound = () => {
+    dispatch(toggleFound(user, item));
   };
 
   if (showDetails) {
@@ -61,7 +68,7 @@ function Item({ item, found, handleToggleFound }) {
       <h2>{item.latin}</h2>
       {item.common[0]}
       <p />
-      <button type="submit" onClick={() => handleToggleFound(item)}>
+      <button type="submit" onClick={() => handleToggleFound()}>
         toggle found
       </button>
       <br />

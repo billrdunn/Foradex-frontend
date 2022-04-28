@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
-function LoginForm({ handleLogin }) {
+function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  LoginForm.propTypes = {
-    handleLogin: PropTypes.func.isRequired,
-  };
+  const handleSubmit = () => {
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleLogin({
-      username,
-      password,
-    });
+    // dispatch(login(username, password));
+
     setUsername("");
     setPassword("");
   };
@@ -23,7 +16,7 @@ function LoginForm({ handleLogin }) {
     <div className="loginFormDiv">
       <h2>Login</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={() => handleSubmit()}>
         <div>
           <input
             className="loginInputUsername"
