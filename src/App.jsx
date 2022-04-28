@@ -24,7 +24,7 @@ function App() {
     const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
     if (loggedInUserJSON) {
       const loggedInUser = JSON.parse(loggedInUserJSON);
-      setUser(user);
+      setUser(loggedInUser);
       userService.setToken(loggedInUser.token);
     }
   }, []);
