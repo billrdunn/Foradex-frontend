@@ -41,19 +41,31 @@ describe("Foradex", function () {
       cy.login(initialUser);
     });
 
-    it("item turns green when toggle found is clicked", function () {
-      cy.contains("toggle found").click();
-      cy.get("#itemBasicDiv").should(
+    it("second item turns green when toggle found is clicked", function () {
+      cy.contains("The Prince").as("thePrince");
+      cy.get("@thePrince").contains("toggle found").click();
+      cy.get("@thePrince").should(
         "have.css",
         "background",
         "rgb(144, 238, 144) none repeat scroll 0% 0%"
       );
+      cy.get("@thePrince")
+        .parent()
+        .contains("Horse Mushroom")
+        .should("have.css", "background", "rgb(255, 0, 0) none repeat scroll 0% 0%");
     });
 
     it("item can be searched for and only that item is displayed", function () {
       cy.get("#searchBarInput").type("arvensi");
       cy.contains("Agaricus arvensis");
       cy.contains("Agaricus augustus").should("not.exist");
+    });
+
+    it("there are two items displayed", function () {
+      // Cypress commands are like promises, so to access return values we use .then()
+      cy.get(".item").then((items) => {
+        expect(items.length).to.equal(2);
+      });
     });
   });
 });
