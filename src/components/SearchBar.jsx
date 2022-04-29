@@ -1,16 +1,21 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { setSearchVal } from "../reducers/searchValReducer";
 
-function SearchBar({ onChange }) {
-  SearchBar.propTypes = {
-    onChange: PropTypes.func.isRequired,
+function SearchBar() {
+
+  const dispatch = useDispatch();
+
+  const handleSearchChange = (event) => {
+    const searchVal = event.target.value.toLowerCase();
+    dispatch(setSearchVal(searchVal));
   };
 
   return (
     <div>
       Search:
       <form>
-        <input id="searchBarInput" onChange={onChange} />
+        <input id="searchBarInput" onChange={() => handleSearchChange} />
       </form>
     </div>
   );

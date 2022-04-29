@@ -7,17 +7,26 @@ import usersReducer from "./reducers/usersReducer";
 import itemsReducer from "./reducers/itemsReducer";
 import "./index.css";
 import loginReducer from "./reducers/loginReducer";
+import searchValReducer from "./reducers/searchValReducer";
 
 const reducer = combineReducers({
   users: usersReducer,
   items: itemsReducer,
-  login: loginReducer
+  login: loginReducer,
+  searchVal: searchValReducer,
 });
+
+const store = createStore(reducer);
+// store.dispatch(setSearchVal("test search"));
+
+// store.subscribe(() => {
+//   console.log(store.getState());
+// });
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
-  <Provider store={createStore(reducer)}>
+  <Provider store={store}>
     <App tab="home" />
   </Provider>
 );

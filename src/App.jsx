@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Item from "./components/Item";
 import LogoutButton from "./components/LogoutButton";
@@ -15,10 +15,7 @@ function App() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.items);
   const loggedInUser = useSelector((state) => state.login);
-
-  const [showAll, setShowAll] = useState(true);
-  const [searchStr, setSearchStr] = useState(" ");
-  // const [user, setUser] = useState(null);
+  const searchVal = useSelector((state) => state.searchVal);
 
   useEffect(() => {
     dispatch(initialiseLoggedInUser());
@@ -44,18 +41,14 @@ function App() {
   //   }
   // };
 
-  const itemsToShow = showAll
-    ? items
-    : items.filter(
-        (item) =>
-          item.latin.toLowerCase().includes(searchStr) ||
-          item.common[0].toLowerCase().includes(searchStr)
-      );
-
-  const handleSearchChange = (event) => {
-    setShowAll(false);
-    setSearchStr(event.target.value.toLowerCase());
-  };
+  const itemsToShow =
+    searchVal.length === 0
+      ? items
+      : items.filter(
+          (item) =>
+            item.latin.toLowerCase().includes(searchVal) ||
+            item.common[0].toLowerCase().includes(searchVal)
+        );
 
   const loginForm = () => (
     <Togglable buttonLabel="show login">
@@ -66,7 +59,7 @@ function App() {
   const itemList = () => (
     <div>
       <h1>Items</h1>
-      <SearchBar searchStr={searchStr} onChange={handleSearchChange} />
+      <SearchBar />
       {itemsToShow.map((item) => (
         <Item key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
       ))}
