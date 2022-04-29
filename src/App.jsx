@@ -3,43 +3,36 @@ import { useSelector, useDispatch } from "react-redux";
 import Item from "./components/Item";
 import LogoutButton from "./components/LogoutButton";
 import SearchBar from "./components/SearchBar";
-// import itemService from "./services/items";
-// import loginService from "./services/login";
-// import userService from "./services/users";
+import itemService from "./services/items";
+import userService from "./services/users";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
-import { initialiseLoggedInUser } from "./reducers/loginReducer";
-import { initialiseItems } from "./reducers/itemsReducer";
+import { initLoggedInUser, logout } from "./reducers/loginReducer";
+import { initItems } from "./reducers/itemsReducer";
+import { initUsers } from "./reducers/usersReducer";
 
 function App() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.items);
-  const loggedInUser = useSelector((state) => state.login);
+  const loggedInUser = useSelector((state) => state.loggedInUser);
   const searchVal = useSelector((state) => state.searchVal);
 
   useEffect(() => {
-    dispatch(initialiseLoggedInUser());
-    dispatch(initialiseItems());
-    // dispatch(initializeAllUsers())
+    const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
+    if (loggedInUserJSON) {
+      const user = JSON.parse(loggedInUserJSON);
+      userService.setToken(user.token);
+      dispatch(initLoggedInUser(user));
+      console.log('user :>> ', user);
+    } 
+
+    itemService.getAll().then((res) => {
+      dispatch(initItems(res));
+    });
+    userService.getAll().then((res) => {
+      dispatch(initUsers(res));
+    });
   }, [dispatch]);
-
-  // const handleLogin = async (userObject) => {
-  //   const { username } = userObject;
-  //   const { password } = userObject;
-  //   try {
-  //     const loggedInUser = await loginService.login({
-  //       username,
-  //       password,
-  //     });
-
-  //     window.localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-
-  //     userService.setToken(loggedInUser.token);
-  //     setUser(loggedInUser);
-  //   } catch (exception) {
-  //     alert("Invalid credentials", exception);
-  //   }
-  // };
 
   const itemsToShow =
     searchVal.length === 0
@@ -68,6 +61,7 @@ function App() {
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedInUser");
+    dispatch(logout());
   };
 
   return (

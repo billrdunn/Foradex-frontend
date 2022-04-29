@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { createStore, combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import App from "./App";
 import usersReducer from "./reducers/usersReducer";
@@ -9,19 +9,14 @@ import "./index.css";
 import loginReducer from "./reducers/loginReducer";
 import searchValReducer from "./reducers/searchValReducer";
 
-const reducer = combineReducers({
-  users: usersReducer,
-  items: itemsReducer,
-  login: loginReducer,
-  searchVal: searchValReducer,
+const store = configureStore({
+  reducer: {
+    users: usersReducer,
+    items: itemsReducer,
+    loggedInUser: loginReducer,
+    searchVal: searchValReducer,
+  },
 });
-
-const store = createStore(reducer);
-// store.dispatch(setSearchVal("test search"));
-
-// store.subscribe(() => {
-//   console.log(store.getState());
-// });
 
 const container = document.getElementById("root");
 const root = createRoot(container);

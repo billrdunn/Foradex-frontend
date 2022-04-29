@@ -1,15 +1,12 @@
-const searchValReducer = (state = "", action = {}) => {
-  switch (action.type) {
-    case "SET_SEARCH_VAL":
-      return action.searchVal;
-    default:
-      return state;
-  }
-};
+import { createSlice } from "@reduxjs/toolkit";
 
-export const setSearchVal = (searchVal) => ({
-  type: "SET_SEARCH_VAL",
-  searchVal,
+const searchValSlice = createSlice({
+  name: "searchVal",
+  initialState: "",
+  reducers: {
+    setSearchVal: (state, action) => action.payload,
+  },
 });
 
-export default searchValReducer;
+export const { setSearchVal } = searchValSlice.actions;
+export default searchValSlice.reducer;

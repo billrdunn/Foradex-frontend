@@ -1,22 +1,35 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../reducers/loginReducer";
+import loginService from "../services/login";
+import userService from "../services/users";
 
 function LoginForm() {
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await loginService.login({ username, password });
 
-    // dispatch(login(username, password));
-
-    setUsername("");
-    setPassword("");
+      window.localStorage.setItem("loggedInUser", JSON.stringify(response));
+      userService.setToken(response.token);
+      dispatch(login(response));
+      setUsername("");
+      setPassword("");
+    } catch (exception) {
+      console.log("exception :>> ", exception);
+    }
   };
 
   return (
     <div className="loginFormDiv">
       <h2>Login</h2>
 
-      <form onSubmit={() => handleSubmit()}>
+      <form onSubmit={handleSubmit}>
         <div>
           <input
             className="loginInputUsername"

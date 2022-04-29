@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFound } from "../reducers/usersReducer";
+import userService from "../services/users";
+import { updateUser } from "../reducers/usersReducer";
+import { updateLoggedInUser } from "../reducers/loginReducer";
 
 function Item({ item, found }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.login)
+  const user = useSelector((state) => state.loggedInUser);
   const [showDetails, setShowDetails] = useState(false);
 
   Item.propTypes = {
@@ -23,6 +25,7 @@ function Item({ item, found }) {
       flavour: PropTypes.string.isRequired,
       frequency: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
     }).isRequired,
     found: PropTypes.bool.isRequired,
   };
@@ -38,8 +41,28 @@ function Item({ item, found }) {
     setShowDetails(!showDetails);
   };
 
-  const handleToggleFound = () => {
-    dispatch(toggleFound(user, item));
+  const handleToggleFound = async () => {
+    if (found) {
+      const newItems = user.items.filter((i) => i !== item.id);
+      const newUser = {
+        ...user,
+        items: newItems,
+      };
+      const response = await userService.update(user.id, newUser);
+      dispatch(updateUser(response));
+      dispatch(updateLoggedInUser(response));
+    } else {
+      const newItems = [...user.items, item.id];
+
+      const newUser = {
+        ...user,
+        items: newItems,
+      };
+
+      const response = await userService.update(user.id, newUser);
+      dispatch(updateUser(response));
+      dispatch(updateLoggedInUser(response));
+    }
   };
 
   if (showDetails) {
@@ -68,7 +91,7 @@ function Item({ item, found }) {
       <h2>{item.latin}</h2>
       {item.common[0]}
       <p />
-      <button type="submit" onClick={() => handleToggleFound()}>
+      <button type="submit" onClick={handleToggleFound}>
         toggle found
       </button>
       <br />

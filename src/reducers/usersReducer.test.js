@@ -7,7 +7,7 @@ describe("userReducer", () => {
 
     const action = {
       type: "TOGGLE_FOUND",
-      data: {
+      payload: {
         username: "createdbyRESTclient",
         name: "Rest Client",
         items: [
@@ -27,6 +27,6 @@ describe("userReducer", () => {
     const newState = userReducer(state, action);
 
     expect(newState).toHaveLength(1);
-    expect(newState).toContainEqual(action.data);
+    expect(newState).toContainEqual(action.payload);
   });
 });

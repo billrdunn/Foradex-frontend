@@ -15,7 +15,7 @@ function SearchBar() {
     <div>
       Search:
       <form>
-        <input id="searchBarInput" onChange={() => handleSearchChange} />
+        <input id="searchBarInput" onChange={handleSearchChange} />
       </form>
     </div>
   );
