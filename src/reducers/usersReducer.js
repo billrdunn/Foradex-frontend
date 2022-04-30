@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import userService from "../services/users";
 
 const usersSlice = createSlice({
   name: "users",
@@ -13,4 +14,13 @@ const usersSlice = createSlice({
 });
 
 export const { initUsers, updateUser } = usersSlice.actions;
+
+export const initialiseUsers = () => {
+  console.log("in initialiseUsers");
+  return async (dispatch) => {
+    const users = await userService.getAll();
+    dispatch(initUsers(users));
+  };
+};
+
 export default usersSlice.reducer;

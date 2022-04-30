@@ -3,13 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import Item from "./components/Item";
 import LogoutButton from "./components/LogoutButton";
 import SearchBar from "./components/SearchBar";
-import itemService from "./services/items";
-import userService from "./services/users";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
-import { initLoggedInUser, logout } from "./reducers/loginReducer";
-import { initItems } from "./reducers/itemsReducer";
-import { initUsers } from "./reducers/usersReducer";
+import { initialiseLoggedInUser, logout } from "./reducers/loginReducer";
+import { initialiseItems } from "./reducers/itemsReducer";
+import { initialiseUsers } from "./reducers/usersReducer";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,20 +16,9 @@ function App() {
   const searchVal = useSelector((state) => state.searchVal);
 
   useEffect(() => {
-    const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
-    if (loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON);
-      userService.setToken(user.token);
-      dispatch(initLoggedInUser(user));
-      console.log('user :>> ', user);
-    } 
-
-    itemService.getAll().then((res) => {
-      dispatch(initItems(res));
-    });
-    userService.getAll().then((res) => {
-      dispatch(initUsers(res));
-    });
+    dispatch(initialiseLoggedInUser());
+    dispatch(initialiseItems());
+    dispatch(initialiseUsers());
   }, [dispatch]);
 
   const itemsToShow =
