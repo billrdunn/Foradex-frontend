@@ -5,21 +5,28 @@ const usersSlice = createSlice({
   name: "users",
   initialState: [],
   reducers: {
-    initUsers: (state, action) => action.payload,
-    updateUser: (state, action) => {
+    update: (state, action) => action.payload,
+    edit: (state, action) => {
       state.filter((user) => user.id !== action.payload.id).push(action.payload);
-      return state;
     },
   },
 });
 
-export const { initUsers, updateUser } = usersSlice.actions;
+const { update, edit } = usersSlice.actions;
 
-export const initialiseUsers = () => {
+export const initUsers = () => {
   console.log("in initialiseUsers");
   return async (dispatch) => {
     const users = await userService.getAll();
-    dispatch(initUsers(users));
+    dispatch(update(users));
+  };
+};
+
+export const editUser = (id, newUser) => {
+  console.log("in updateUser");
+  return async (dispatch) => {
+    const response = await userService.update(id, newUser);
+    dispatch(edit(response));
   };
 };
 

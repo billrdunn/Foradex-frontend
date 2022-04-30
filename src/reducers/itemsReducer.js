@@ -5,17 +5,17 @@ const itemsSlice = createSlice({
   name: "items",
   initialState: [],
   reducers: {
-    initItems: (state, action) => action.payload,
+    update: (state, action) => action.payload,
   },
 });
 
-export const { initItems } = itemsSlice.actions;
+const { update } = itemsSlice.actions;
 
-export const initialiseItems = () => {
+export const initItems = () => {
   console.log("in initialiseItems");
   return async (dispatch) => {
     const items = await itemService.getAll();
-    dispatch(initItems(items));
+    dispatch(update(items));
   };
 };
 

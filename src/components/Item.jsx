@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import userService from "../services/users";
-import { updateUser } from "../reducers/usersReducer";
 import { updateLoggedInUser } from "../reducers/loginReducer";
 
 function Item({ item, found }) {
@@ -41,28 +39,18 @@ function Item({ item, found }) {
     setShowDetails(!showDetails);
   };
 
-  const handleToggleFound = async () => {
+  const handleToggleFound = () => {
+    let newItems;
     if (found) {
-      const newItems = user.items.filter((i) => i !== item.id);
-      const newUser = {
-        ...user,
-        items: newItems,
-      };
-      const response = await userService.update(user.id, newUser);
-      dispatch(updateUser(response));
-      dispatch(updateLoggedInUser(response));
+      newItems = user.items.filter((i) => i !== item.id);
     } else {
-      const newItems = [...user.items, item.id];
-
-      const newUser = {
-        ...user,
-        items: newItems,
-      };
-
-      const response = await userService.update(user.id, newUser);
-      dispatch(updateUser(response));
-      dispatch(updateLoggedInUser(response));
+      newItems = [...user.items, item.id];
     }
+    const newUser = {
+      ...user,
+      items: newItems,
+    };
+    dispatch(updateLoggedInUser(user.id, newUser));
   };
 
   if (showDetails) {

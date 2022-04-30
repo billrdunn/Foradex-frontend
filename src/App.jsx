@@ -5,9 +5,9 @@ import LogoutButton from "./components/LogoutButton";
 import SearchBar from "./components/SearchBar";
 import LoginForm from "./components/LoginForm";
 import Togglable from "./components/Togglable";
-import { initialiseLoggedInUser, logout } from "./reducers/loginReducer";
-import { initialiseItems } from "./reducers/itemsReducer";
-import { initialiseUsers } from "./reducers/usersReducer";
+import { initLoggedInUser } from "./reducers/loginReducer";
+import { initItems } from "./reducers/itemsReducer";
+import { initUsers } from "./reducers/usersReducer";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,9 +16,9 @@ function App() {
   const searchVal = useSelector((state) => state.searchVal);
 
   useEffect(() => {
-    dispatch(initialiseLoggedInUser());
-    dispatch(initialiseItems());
-    dispatch(initialiseUsers());
+    dispatch(initLoggedInUser());
+    dispatch(initItems());
+    dispatch(initUsers());
   }, [dispatch]);
 
   const itemsToShow =
@@ -46,16 +46,11 @@ function App() {
     </div>
   );
 
-  const handleLogout = () => {
-    window.localStorage.removeItem("loggedInUser");
-    dispatch(logout());
-  };
-
   return (
     <div>
       <h1>Foradex</h1>
       {loggedInUser === null ? loginForm() : <h2>{loggedInUser.name} logged in</h2>}
-      {loggedInUser !== null && <LogoutButton onClick={() => handleLogout()} />}
+      {loggedInUser !== null && <LogoutButton />}
       {loggedInUser !== null && itemList()}
     </div>
   );

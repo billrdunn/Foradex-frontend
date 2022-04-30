@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/loginReducer";
-import loginService from "../services/login";
-import userService from "../services/users";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -10,19 +8,9 @@ function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      const response = await loginService.login({ username, password });
-
-      window.localStorage.setItem("loggedInUser", JSON.stringify(response));
-      userService.setToken(response.token);
-      dispatch(login(response));
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      console.log("exception :>> ", exception);
-    }
+    dispatch(login(username, password));
   };
 
   return (
