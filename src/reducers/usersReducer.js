@@ -14,20 +14,14 @@ const usersSlice = createSlice({
 
 const { update, edit } = usersSlice.actions;
 
-export const initUsers = () => {
-  console.log("in initialiseUsers");
-  return async (dispatch) => {
-    const users = await userService.getAll();
-    dispatch(update(users));
-  };
+export const initUsers = () => async (dispatch) => {
+  const users = await userService.getAll();
+  dispatch(update(users));
 };
 
-export const editUser = (id, newUser) => {
-  console.log("in updateUser");
-  return async (dispatch) => {
-    const response = await userService.update(id, newUser);
-    dispatch(edit(response));
-  };
+export const editUser = (id, newUser) => async (dispatch) => {
+  const response = await userService.update(id, newUser);
+  dispatch(edit(response));
 };
 
 export default usersSlice.reducer;

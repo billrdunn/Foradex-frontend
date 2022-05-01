@@ -11,12 +11,9 @@ const itemsSlice = createSlice({
 
 const { update } = itemsSlice.actions;
 
-export const initItems = () => {
-  console.log("in initialiseItems");
-  return async (dispatch) => {
-    const items = await itemService.getAll();
-    dispatch(update(items));
-  };
+export const initItems = () => async (dispatch) => {
+  const items = await itemService.getAll();
+  dispatch(update(items));
 };
 
 export default itemsSlice.reducer;

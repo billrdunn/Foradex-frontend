@@ -7,4 +7,9 @@ const login = async (credentials) => {
   return response.data;
 };
 
-export default { login };
+const update = async (user) => {
+  const response = await axios.post(`${baseUrl}/${user.id}`, { user });
+  return response.data;
+};
+
+export default { login, update };
