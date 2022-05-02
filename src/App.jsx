@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LogoutButton from "./components/LogoutButton";
-import LoginForm from "./components/LoginForm";
-import Togglable from "./components/Togglable";
 import { initLoggedInUser } from "./reducers/loginReducer";
 import { initItems } from "./reducers/itemsReducer";
 import { initUsers } from "./reducers/usersReducer";
 import ItemList from "./components/ItemList";
+import Home from "./components/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,21 +18,34 @@ function App() {
     dispatch(initUsers());
   }, [dispatch]);
 
-
-  const loginForm = () => (
-    <Togglable buttonLabel="show login">
-      <LoginForm />
-    </Togglable>
-  );
-
+  const padding = {
+    padding: 5,
+  };
 
   return (
-    <div>
-      <h1>Foradex</h1>
-      {loggedInUser === null ? loginForm() : <h2>{loggedInUser.name} logged in</h2>}
-      {loggedInUser !== null && <LogoutButton />}
-      {loggedInUser !== null && <ItemList />}
-    </div>
+    <Router>
+      <div>
+        <Link style={padding} to="/">
+          home
+        </Link>
+        {loggedInUser && (
+          <Link style={padding} to="/items">
+            items
+          </Link>
+        )}
+        {loggedInUser && (
+          <Link style={padding} to="/user">
+            user
+          </Link>
+        )}
+      </div>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/items" element={<ItemList />} />
+        <Route path="/user" element={<LogoutButton />} />
+      </Routes>
+    </Router>
   );
 }
 
