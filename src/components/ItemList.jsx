@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
-import Item from "./Item";
+import ItemBasic from "./ItemBasic";
 
 function ItemList() {
   const searchVal = useSelector((state) => state.searchVal);
@@ -22,7 +22,7 @@ function ItemList() {
       <h1>Items</h1>
       <SearchBar />
       {itemsToShow.map((item) => (
-        <Item key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
+        <ItemBasic key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
       ))}
     </div>
   );

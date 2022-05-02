@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLoggedInUser } from "../reducers/loginReducer";
 
-function Item({ item, found }) {
+function ItemBasic({ item, found }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.loggedInUser);
-  const [showDetails, setShowDetails] = useState(false);
 
-  Item.propTypes = {
+  ItemBasic.propTypes = {
     item: PropTypes.shape({
       latin: PropTypes.string.isRequired,
       common: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -35,10 +35,6 @@ function Item({ item, found }) {
     borderTop: "10px solid white",
   };
 
-  const handleShowDetails = () => {
-    setShowDetails(!showDetails);
-  };
-
   const handleToggleFound = () => {
     let newItems;
     if (found) {
@@ -53,41 +49,19 @@ function Item({ item, found }) {
     dispatch(updateLoggedInUser(user.id, newUser));
   };
 
-  if (showDetails) {
-    return (
-      <div className="item" style={itemStyle} id="itemDetailsDiv">
-        <h2>{item.latin}</h2>
-        <span>{item.common}</span>
-        <p>Cap: {item.description.cap}</p>
-        <p>Gills: {item.description.gills}</p>
-        <p>Stem: {item.description.stem}</p>
-        <p>Flesh: {item.description.flesh}</p>
-        <p>Spores: {item.description.spores}</p>
-        <p>Habitat: {item.habitat}</p>
-        <p>Flavour: {item.flavour}</p>
-        <p>Frequency: {item.frequency}</p>
-        <img src={item.image} alt="Amethyst deceiver pic" height={200} />
-        <p />
-        <button type="submit" onClick={handleShowDetails}>
-          hide details
-        </button>
-      </div>
-    );
-  }
   return (
     <div className="item" style={itemStyle} id="itemBasicDiv">
-      <h2>{item.latin}</h2>
+      <h2>
+        <Link to={`/items/${item.id}`}>{item.latin}</Link>
+      </h2>
       {item.common[0]}
       <p />
       <button type="submit" onClick={handleToggleFound}>
         toggle found
       </button>
       <br />
-      <button type="submit" onClick={() => handleShowDetails()}>
-        view details
-      </button>
     </div>
   );
 }
 
-export default Item;
+export default ItemBasic;

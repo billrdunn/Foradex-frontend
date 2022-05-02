@@ -7,10 +7,12 @@ import { initItems } from "./reducers/itemsReducer";
 import { initUsers } from "./reducers/usersReducer";
 import ItemList from "./components/ItemList";
 import Home from "./components/Home";
+import ItemDetailed from "./components/ItemDetailed";
 
 function App() {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.loggedInUser);
+  const items = useSelector((state) => state.items);
 
   useEffect(() => {
     dispatch(initLoggedInUser());
@@ -43,6 +45,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/items" element={<ItemList />} />
+        <Route path="/items/:id" element={<ItemDetailed items={items} />} />
         <Route path="/user" element={<LogoutButton />} />
       </Routes>
     </Router>
