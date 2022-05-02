@@ -1,14 +1,24 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function ItemDetailed({ items }) {
-  const { id } = useParams();
-
-  const item = items.find((i) => i.id === String(id));
-
+function ItemDetailed({ item }) {
   ItemDetailed.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape).isRequired,
+    item: PropTypes.shape({
+      latin: PropTypes.string.isRequired,
+      common: PropTypes.arrayOf(PropTypes.string).isRequired,
+      description: PropTypes.shape({
+        cap: PropTypes.string.isRequired,
+        gills: PropTypes.string.isRequired,
+        stem: PropTypes.string.isRequired,
+        flesh: PropTypes.string.isRequired,
+        spores: PropTypes.string.isRequired,
+      }),
+      habitat: PropTypes.string.isRequired,
+      flavour: PropTypes.string.isRequired,
+      frequency: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   const itemStyle = {

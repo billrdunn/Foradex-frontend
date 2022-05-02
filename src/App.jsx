@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Route, Routes, Link, useMatch } from "react-router-dom";
 import LogoutButton from "./components/LogoutButton";
 import { initLoggedInUser } from "./reducers/loginReducer";
 import { initItems } from "./reducers/itemsReducer";
@@ -14,6 +14,10 @@ function App() {
   const loggedInUser = useSelector((state) => state.loggedInUser);
   const items = useSelector((state) => state.items);
 
+  // If the url matches "/items/:id", we can use the match variable to find the item
+  const match = useMatch("/items/:id");
+  const item = match ? items.find((i) => i.id === match.params.id) : null;
+
   useEffect(() => {
     dispatch(initLoggedInUser());
     dispatch(initItems());
@@ -25,7 +29,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <>
       <div>
         <Link style={padding} to="/">
           home
@@ -45,10 +49,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/items" element={<ItemList />} />
-        <Route path="/items/:id" element={<ItemDetailed items={items} />} />
+        <Route path="/items/:id" element={item && <ItemDetailed item={item} />} />
         <Route path="/user" element={<LogoutButton />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 
