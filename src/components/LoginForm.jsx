@@ -1,12 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { Form, Button } from "react-bootstrap";
 import { login } from "../reducers/loginReducer";
 import useField from "../hooks/index";
 
 function LoginForm() {
   const dispatch = useDispatch();
 
-  const usernameField = useField("text", "loginInputUsername", "username");
+  const usernameField = useField("text", "loginInputUsername", "Username");
   const passwordField = useField("password", "loginInputPassword", "password");
 
   const handleSubmit = (event) => {
@@ -17,30 +18,27 @@ function LoginForm() {
   return (
     <div className="loginFormDiv">
       <h2>Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Control
             id={usernameField.id}
             type={usernameField.type}
             value={usernameField.value}
             onChange={usernameField.onChange}
             placeholder={usernameField.placeholder}
           />
-        </div>
-        <div>
-          <input
+          <Form.Control
             id={passwordField.id}
             type={passwordField.type}
             value={passwordField.value}
             onChange={passwordField.onChange}
             placeholder={passwordField.placeholder}
           />
-        </div>
-        <button className="loginButton" id="loginButton" type="submit">
-          login
-        </button>
-      </form>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
     </div>
   );
 }
