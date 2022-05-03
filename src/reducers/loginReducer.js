@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import userService from "../services/users";
 import loginService from "../services/login";
-import { editUser } from "./usersReducer";
 
 const loginSlice = createSlice({
   name: "login",
@@ -25,10 +24,8 @@ export const initLoggedInUser = () => async (dispatch) => {
   }
 };
 
-export const updateLoggedInUser = (id, newUser) => async (dispatch) => {
-  const response = await userService.update(id, newUser);
-  dispatch(update(response));
-  dispatch(editUser(id, newUser));
+export const updateLoggedInUser = (updatedUser) => async (dispatch) => {
+  dispatch(update(updatedUser));
 };
 
 export const login = (username, password) => async (dispatch) => {

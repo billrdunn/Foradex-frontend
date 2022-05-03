@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateLoggedInUser } from "../reducers/loginReducer";
+import { updateUser } from "../reducers/usersReducer";
 
 function ItemBasic({ item, found }) {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ function ItemBasic({ item, found }) {
       ...user,
       items: newItems,
     };
-    dispatch(updateLoggedInUser(user.id, newUser));
+    dispatch(updateUser(user.id, newUser));
   };
 
   return (
