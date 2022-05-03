@@ -29,7 +29,7 @@ function App() {
   };
 
   return (
-    <>
+    <div className="container">
       <div>
         <Link style={padding} to="/">
           home
@@ -52,7 +52,7 @@ function App() {
         <Route path="/items/:id" element={item && <ItemDetailed item={item} />} />
         <Route path="/user" element={<LogoutButton />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

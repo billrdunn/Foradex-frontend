@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Table } from "react-bootstrap";
 import SearchBar from "./SearchBar";
 import ItemBasic from "./ItemBasic";
 
@@ -21,9 +22,17 @@ function ItemList() {
     <div>
       <h1>Items</h1>
       <SearchBar />
-      {itemsToShow.map((item) => (
-        <ItemBasic key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
-      ))}
+      <Table striped>
+        <tbody>
+          {itemsToShow.map((item) => (
+            <tr key={item.id}>
+              <td>
+                <ItemBasic key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 }

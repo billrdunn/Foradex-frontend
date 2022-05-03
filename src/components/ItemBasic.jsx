@@ -31,8 +31,6 @@ function ItemBasic({ item, found }) {
   const itemStyle = {
     background: found ? "lightgreen" : "red",
     padding: "10px",
-    borderBottom: "10px solid white",
-    borderTop: "10px solid white",
   };
 
   const handleToggleFound = () => {
