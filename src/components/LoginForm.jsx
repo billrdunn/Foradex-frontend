@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/loginReducer";
+import useField from "../hooks/index";
 
 function LoginForm() {
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const usernameField = useField("text", "loginInputUsername", "username");
+  const passwordField = useField("password", "loginInputPassword", "password");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(login(username, password));
+    dispatch(login(usernameField.value, passwordField.value));
   };
 
   return (
@@ -20,21 +21,20 @@ function LoginForm() {
       <form onSubmit={handleSubmit}>
         <div>
           <input
-            className="loginInputUsername"
-            id="loginInputUsername"
-            placeholder="username"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
+            id={usernameField.id}
+            type={usernameField.type}
+            value={usernameField.value}
+            onChange={usernameField.onChange}
+            placeholder={usernameField.placeholder}
           />
         </div>
         <div>
           <input
-            className="loginInputPassword"
-            id="loginInputPassword"
-            placeholder="password"
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            id={passwordField.id}
+            type={passwordField.type}
+            value={passwordField.value}
+            onChange={passwordField.onChange}
+            placeholder={passwordField.placeholder}
           />
         </div>
         <button className="loginButton" id="loginButton" type="submit">
