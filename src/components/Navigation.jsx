@@ -29,7 +29,7 @@ function Navigation() {
           <Nav.Link href="#" as="span">
             {loggedInUser && (
               <Link style={padding} to="/user">
-                users
+                user
               </Link>
             )}
           </Nav.Link>
