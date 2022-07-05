@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { Card, Button, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../reducers/usersReducer";
 
@@ -28,10 +29,7 @@ function ItemBasic({ item, found }) {
     found: PropTypes.bool.isRequired,
   };
 
-  const itemStyle = {
-    background: found ? "lightgreen" : "red",
-    padding: "10px",
-  };
+  const backgroundColour = found ? "success" : "danger";
 
   const handleToggleFound = () => {
     let newItems;
@@ -48,17 +46,18 @@ function ItemBasic({ item, found }) {
   };
 
   return (
-    <div className="item" style={itemStyle} id="itemBasicDiv">
-      <h2>
-        <Link to={`/items/${item.id}`}>{item.latin}</Link>
-      </h2>
-      {item.common[0]}
-      <p />
-      <button type="submit" onClick={handleToggleFound}>
-        toggle found
-      </button>
-      <br />
-    </div>
+    <Card bg={backgroundColour} style={{ width: "18rem" }}>
+      <Card.Img variant="top" src={item.image} />
+      <Card.Body>
+        <Card.Text>
+          <Link to={`/items/${item.id}`}>{item.latin}</Link>
+        </Card.Text>
+        <ListGroup variant="flush">
+            <ListGroup.Item>{item.common[0]}</ListGroup.Item>
+        </ListGroup>
+        <Button onClick={handleToggleFound}>toggle found</Button>
+      </Card.Body>
+    </Card>
   );
 }
 

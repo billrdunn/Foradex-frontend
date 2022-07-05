@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import SearchBar from "./SearchBar";
-import ItemBasic from "./ItemBasic";
+import ItemCard from "./ItemCard";
 
 function ItemList() {
   const searchVal = useSelector((state) => state.searchVal);
@@ -22,17 +22,13 @@ function ItemList() {
     <div>
       <h1>Items</h1>
       <SearchBar />
-      <Table striped>
-        <tbody>
-          {itemsToShow.map((item) => (
-            <tr key={item.id}>
-              <td>
-                <ItemBasic key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <Row xs={1} md={2} xl={3} className="g-4">
+        {itemsToShow.map((item) => (
+          <Col>
+            <ItemCard key={item.id} item={item} found={loggedInUser.items.includes(item.id)} />
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 }
