@@ -6,12 +6,25 @@ const loginSlice = createSlice({
   name: "login",
   initialState: null,
   reducers: {
-    update: (state, action) => action.payload,
-    setNull: () => null,
+    updateLogin: (state, action) => action.payload,
+    setLoginNull: () => null,
   },
 });
 
-const { update, setNull } = loginSlice.actions;
+const { updateLogin, setLoginNull } = loginSlice.actions;
+export const loginReducer = loginSlice.reducer;
+
+const loginExceptionSlice = createSlice({
+  name: "loginException",
+  initialState: null,
+  reducers: {
+    updateLoginException: (state, action) => action.payload,
+    setLoginExceptionNull: () => null,
+  },
+});
+
+const { updateLoginException, setLoginExceptionNull } = loginExceptionSlice.actions;
+export const loginExceptionReducer = loginExceptionSlice.reducer;
 
 export const initLoggedInUser = () => async (dispatch) => {
   const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
@@ -20,12 +33,12 @@ export const initLoggedInUser = () => async (dispatch) => {
     // Need to update the user in case the user has changed since the last time they logged in
     const newUser = await loginService.update(user);
     userService.setToken(newUser.token);
-    dispatch(update(newUser));
+    dispatch(updateLogin(newUser));
   }
 };
 
 export const updateLoggedInUser = (updatedUser) => async (dispatch) => {
-  dispatch(update(updatedUser));
+  dispatch(updateLogin(updatedUser));
 };
 
 export const login = (username, password) => async (dispatch) => {
@@ -34,15 +47,14 @@ export const login = (username, password) => async (dispatch) => {
 
     window.localStorage.setItem("loggedInUser", JSON.stringify(response));
     userService.setToken(response.token);
-    dispatch(update(response));
+    dispatch(updateLogin(response));
+    dispatch(setLoginExceptionNull());
   } catch (exception) {
-    console.log("exception :>> ", exception);
+    dispatch(updateLoginException(exception.response.data.error));
   }
 };
 
 export const logout = () => async (dispatch) => {
   window.localStorage.removeItem("loggedInUser");
-  dispatch(setNull());
+  dispatch(setLoginNull());
 };
-
-export default loginSlice.reducer;

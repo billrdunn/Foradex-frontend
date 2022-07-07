@@ -1,25 +1,31 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button } from "react-bootstrap";
-import { login } from "../reducers/loginReducer";
+import { createNewUser } from "../reducers/signUpReducer";
 import useField from "../hooks/index";
 
-function LoginForm() {
+function SignUpForm() {
   const dispatch = useDispatch();
+  const signUpException = useSelector((state) => state.signUpException);
 
-  const loginException = useSelector((state) => state.loginException);
-
-  const usernameField = useField("text", "loginInputUsername", "Username");
-  const passwordField = useField("password", "loginInputPassword", "password");
+  const usernameField = useField("text", "signUpInputUsername", "Username");
+  const nameField = useField("text", "signUpInputName", "Name");
+  const passwordField = useField("password", "signUpInputPassword", "Password");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(login(usernameField.value, passwordField.value));
+    dispatch(
+      createNewUser({
+        username: usernameField.value,
+        name: nameField.value,
+        password: passwordField.value,
+      })
+    );
   };
 
   return (
-    <div className="loginFormDiv">
-      <h2>Login</h2>
+    <div className="signUpFormDiv">
+      <h2>Sign Up</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Control
@@ -30,6 +36,13 @@ function LoginForm() {
             placeholder={usernameField.placeholder}
           />
           <Form.Control
+            id={nameField.id}
+            type={nameField.type}
+            value={nameField.value}
+            onChange={nameField.onChange}
+            placeholder={nameField.placeholder}
+          />
+          <Form.Control
             id={passwordField.id}
             type={passwordField.type}
             value={passwordField.value}
@@ -37,14 +50,14 @@ function LoginForm() {
             placeholder={passwordField.placeholder}
           />
         </Form.Group>
-        {loginException}
+        {signUpException}
         <br />
         <Button variant="primary" type="submit">
-          Login
+          Sign Up
         </Button>
       </Form>
     </div>
   );
 }
 
-export default LoginForm;
+export default SignUpForm;
