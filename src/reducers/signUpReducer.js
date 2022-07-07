@@ -11,26 +11,26 @@ const signUpSlice = createSlice({
 
 export const signUpReducer = signUpSlice.reducer;
 
-const signUpExceptionSlice = createSlice({
-  name: "signUpException",
+const signUpStatusSlice = createSlice({
+  name: "signUpStatus",
   initialState: null,
   reducers: {
-    updateSignUpException: (state, action) => action.payload,
-    setSignUpExceptionNull: () => null,
+    updateSignUpStatus: (state, action) => action.payload,
+    setSignUpStatusNull: () => null,
   },
 });
 
-export const signUpExceptionReducer = signUpExceptionSlice.reducer;
+export const signUpStatusReducer = signUpStatusSlice.reducer;
 
 const { updateSignUp } = signUpSlice.actions;
-const { updateSignUpException, setSignUpExceptionNull } = signUpExceptionSlice.actions;
+const { updateSignUpStatus } = signUpStatusSlice.actions;
 
 export const createNewUser = (newUser) => async (dispatch) => {
   try {
     const user = await userService.create(newUser);
     dispatch(updateSignUp(user));
-    dispatch(setSignUpExceptionNull());
+    dispatch(updateSignUpStatus("Account created"));
   } catch (exception) {
-    dispatch(updateSignUpException(exception.response.data.error));
+    dispatch(updateSignUpStatus(exception.response.data.error));
   }
 };

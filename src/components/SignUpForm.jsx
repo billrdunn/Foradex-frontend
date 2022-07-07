@@ -6,7 +6,7 @@ import useField from "../hooks/index";
 
 function SignUpForm() {
   const dispatch = useDispatch();
-  const signUpException = useSelector((state) => state.signUpException);
+  const signUpStatus = useSelector((state) => state.signUpStatus);
 
   const usernameField = useField("text", "signUpInputUsername", "Username");
   const nameField = useField("text", "signUpInputName", "Name");
@@ -50,7 +50,7 @@ function SignUpForm() {
             placeholder={passwordField.placeholder}
           />
         </Form.Group>
-        {signUpException}
+        {signUpStatus}
         <br />
         <Button variant="primary" type="submit">
           Sign Up
