@@ -5,6 +5,7 @@ import itemsReducer from "./reducers/itemsReducer";
 import { loginReducer, loginExceptionReducer } from "./reducers/loginReducer";
 import searchValReducer from "./reducers/searchValReducer";
 import { signUpStatusReducer } from "./reducers/signUpReducer";
+import monthReducer from "./reducers/monthReducer";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     searchVal: searchValReducer,
     loginException: loginExceptionReducer,
     signUpStatus: signUpStatusReducer,
+    month: monthReducer,
   },
 });
 

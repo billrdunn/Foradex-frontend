@@ -24,12 +24,11 @@ function ItemBasic({ item, found }) {
       flavour: PropTypes.string.isRequired,
       frequency: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
+      image_gs: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     }).isRequired,
     found: PropTypes.bool.isRequired,
   };
-
-  const backgroundColour = found ? "success" : "danger";
 
   const handleToggleFound = () => {
     let newItems;
@@ -46,8 +45,8 @@ function ItemBasic({ item, found }) {
   };
 
   return (
-    <Card bg={backgroundColour} style={{ width: "18rem" }}>
-      <Card.Img variant="top" src={item.image} />
+    <Card bg="success" style={{ width: "18rem" }}>
+      {found ? <Card.Img variant="top" src={item.image} /> : <Card.Img variant="top" src={item.image_gs} />} 
       <Card.Body>
         <Card.Text>
           <Link to={`/items/${item.id}`}>{item.latin}</Link>
