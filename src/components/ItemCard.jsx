@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Card, Button, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Uploady from "@rpldy/uploady";
-import UploadButton from "@rpldy/upload-button";
+import UploadImageButton from "./UploadImageButton";
 import { updateUser } from "../reducers/usersReducer";
 
 function ItemBasic({ item, found }) {
@@ -46,10 +45,13 @@ function ItemBasic({ item, found }) {
     dispatch(updateUser(user.id, newUser));
   };
 
+  const imageUrl = user.user_images.length > 0 ? user.user_images[0] : item.image;
+  console.log("imageUrl :>> ", imageUrl);
+
   return (
     <Card bg="dark" style={{ width: "18rem" }}>
       {found ? (
-        <Card.Img variant="top" src={item.image} />
+        <Card.Img variant="top" src={imageUrl} />
       ) : (
         <Card.Img variant="top" src={item.image_gs} />
       )}
@@ -60,9 +62,7 @@ function ItemBasic({ item, found }) {
         <ListGroup variant="flush">
           <ListGroup.Item>{item.common[0]}</ListGroup.Item>
         </ListGroup>
-        <Uploady destination={{url: "https://greyscaleimages.s3.amazonaws.com/"}} params={{key: `${item.common[0]}-user.png`}}>
-          <UploadButton/>
-        </Uploady>
+        <UploadImageButton item={item} />
         <Button onClick={handleToggleFound}>toggle found</Button>
       </Card.Body>
     </Card>
